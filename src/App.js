@@ -1,23 +1,46 @@
-import logo from './logo.svg';
+import React, {useState} from 'react';
+import Library from './components/library';
 import './App.css';
 
+
+const lettersFromAStoic = {
+  title:'Letters from a Stoic',
+  author: 'Seneca',
+  isRead: true,
+  isOwned: true,
+};
+const theOdyssey = {
+  title:'The Odyssey',
+  author: 'Homer',
+  isRead: false,
+  isOwned: true,
+};
+const thePrince = {
+  title: 'The Prince',
+  author: 'Niccolo Machiavelli',
+  isRead: true,
+  isOwned: true,
+};
+
 function App() {
+  const [myLibrary, setMyLibrary] = useState(() => [lettersFromAStoic, theOdyssey, thePrince]);
+  const [newBook, setNewBook] = useState(() => ({
+    title: null,
+    author: null,
+    isRead: false,
+    isOwned: false
+    // info() {
+    //   return `${this.title} by ${this.author}, ${this.pages} pages, ${this.isRead ? 'already read' : 'not read yet'}`
+    // }
+  }))
+
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <h1>Odin Book Library</h1>
+        <p>A library of the books I have personally read and/or own</p>
       </header>
+      <Library books={myLibrary} />
     </div>
   );
 }
