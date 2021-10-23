@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import Library from './components/library';
+import 'bulma/css/bulma.min.css';
 import './App.css';
-
 
 const lettersFromAStoic = {
   title:'Letters from a Stoic',
@@ -29,19 +29,24 @@ function App() {
     author: null,
     isRead: false,
     isOwned: false
-    // info() {
-    //   return `${this.title} by ${this.author}, ${this.pages} pages, ${this.isRead ? 'already read' : 'not read yet'}`
-    // }
   }))
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <h1>Odin Book Library</h1>
-        <p>A library of the books I have personally read and/or own</p>
-      </header>
-      <Library books={myLibrary} />
-    </div>
+    <>
+      <section className="hero has-background-black">
+        <div className="hero-body">
+          <div className="container center">
+            <h1 className="title is-1 primary">Odin Book Library</h1>
+            <p className="subtitle is-2 tertiary">A library of my book colletion</p>
+          </div>
+        </div>
+      </section>
+      <section className="section has-background-black">
+        <div className="container center">
+          <Library books={myLibrary} />
+        </div>
+      </section>
+    </>
   );
 }
 
