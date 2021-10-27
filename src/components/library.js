@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import 'bulma/css/bulma.min.css';
 import '../App.css'
 
@@ -6,16 +6,16 @@ const header = ['Title', 'Author', 'Progress', 'Status'];
 const Library = ({ books }) => {
     return (
         // <div>
-            <table>
+            <table className="table is-fullwidth is-hoverable">
                 <thead>
                     <tr>
-                        {header.map((label, i) => <th key={i} className="secondary">{label}</th>)}
+                        {header.map((label, i) => <th key={i}>{label}</th>)}
                     </tr>
                 </thead>
                 <tbody>
                     {books.map((book, i) => {
                         return (
-                            <tr key={i} className="tertiary">
+                            <tr key={i}>
                                 <td>{book.title}</td>
                                 <td>{book.author}</td>
                                 <td>{book.isRead ? 'Read' : 'Unread'}</td>

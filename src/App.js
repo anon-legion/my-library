@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
-import Library from './components/library';
+import Library from './components/library.js';
+import NewBook from './components/newBook.js';
 import 'bulma/css/bulma.min.css';
 import './App.css';
 
@@ -33,19 +34,26 @@ function App() {
 
   return (
     <>
-      <section className="hero has-background-black">
-        <div className="hero-body">
-          <div className="container center">
-            <h1 className="title is-1 primary">Odin Book Library</h1>
-            <p className="subtitle is-2 tertiary">A library of my book colletion</p>
+      <header className="hero">
+        <div className="container has-text-centered">
+          <h1 className="title is-1 has-text-primary">Odin Book Library</h1>
+          <p className="subtitle is-2">A library of my book collection</p>
+        </div>
+      </header>
+      <main className="section">
+        <div className="container">
+          <div className="box has-background-info">
+            <Library books={myLibrary} />
           </div>
         </div>
-      </section>
-      <section className="section has-background-black">
-        <div className="container center">
-          <Library books={myLibrary} />
+      </main>
+      <div className="section">
+        <div className="container">
+          <div className="box has-background-info">
+            <NewBook />
+          </div>
         </div>
-      </section>
+      </div>
     </>
   );
 }
