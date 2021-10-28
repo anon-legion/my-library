@@ -1,9 +1,13 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { LibraryContext } from '../libraryContext';
 import 'bulma/css/bulma.min.css';
 import '../App.css'
 
 const header = ['Title', 'Author', 'Progress', 'Status'];
-const Library = ({ books }) => {
+
+const Library = () => {
+    const { myLibrary, setMyLibrary } = useContext(LibraryContext);
+
     return (
         // <div>
             <table className="table is-fullwidth is-hoverable">
@@ -13,7 +17,7 @@ const Library = ({ books }) => {
                     </tr>
                 </thead>
                 <tbody>
-                    {books.map((book, i) => {
+                    {myLibrary.map((book, i) => {
                         return (
                             <tr key={i}>
                                 <td className="mobile-flex" data-header={header[0]}>{book.title}</td>
