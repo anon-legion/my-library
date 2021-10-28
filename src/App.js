@@ -32,6 +32,12 @@ function App() {
     isOwned: false
   }))
 
+  function handleOnChange(e) {
+    setNewBook(prevState => {
+      return {...prevState, [e.target.name]: e.target.value}
+    })
+  }
+
   return (
     <>
       <header className="hero">
@@ -49,8 +55,9 @@ function App() {
       </main>
       <div className="section">
         <div className="container">
+          <span className="is-size-5">Add new book</span>
           <div className="box has-background-info">
-            <NewBook />
+            <NewBook values={newBook} handler={handleOnChange}/>
           </div>
         </div>
       </div>

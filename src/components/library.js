@@ -9,17 +9,17 @@ const Library = ({ books }) => {
             <table className="table is-fullwidth is-hoverable">
                 <thead>
                     <tr>
-                        {header.map((label, i) => <th key={i}>{label}</th>)}
+                        {header.map((label, i) => <th className="desktop" key={i}>{label}</th>)}
                     </tr>
                 </thead>
                 <tbody>
                     {books.map((book, i) => {
                         return (
                             <tr key={i}>
-                                <td>{book.title}</td>
-                                <td>{book.author}</td>
-                                <td>{book.isRead ? 'Read' : 'Unread'}</td>
-                                <td>{book.isOwned ? 'Acquired' : 'Lacking'}</td>
+                                <td className="mobile-flex" data-header={header[0]}>{book.title}</td>
+                                <td className="mobile-flex" data-header={header[1]}>{book.author}</td>
+                                <td className="mobile-flex" data-header={header[2]}>{book.isRead ? 'Read' : 'Unread'}</td>
+                                <td className="mobile-flex" data-header={header[3]}>{book.isOwned ? 'Acquired' : 'Lacking'}</td>
                             </tr>
                         )
                     })}
