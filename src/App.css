@@ -1,9 +1,11 @@
 /* for mobile only */
 @media (max-width: 1024px) {
+    /* display for desktop only, hide on mobile */
     .desktop {
         display: none;
     }
     
+    /* arranges td as column in the tr */
     .mobile-flex {
         display: flex;
         width: 100%;
@@ -21,7 +23,7 @@
     tr {
         border: 1px solid #DBDBDB;
     }
-    /* adds faux-headers on each td by reading "data-header" attribute */
+    /* adds faux-headers on each td by reading "data-header" attribute of the td*/
     td:before {
     content: attr(data-header);
     display: block;

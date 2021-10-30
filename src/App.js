@@ -27,6 +27,15 @@ const thePrince = {
 function App() {
   const [myLibrary, setMyLibrary] = useState(() => [lettersFromAStoic, theOdyssey, thePrince]);
 
+  const [editBook, setEditBook] = useState(() => ({
+    bookState: {
+      title: null,
+      author: null,
+      isRead: false,
+      isOwned: false
+    }
+  }));
+
   return (
     <>
       <header className="hero">
@@ -38,7 +47,7 @@ function App() {
       <main className="section">
         <div className="container">
           <div className="box has-background-info">
-            <LibraryContext.Provider value={{ myLibrary, setMyLibrary}}>
+            <LibraryContext.Provider value={ myLibrary }>
               <Library />
             </LibraryContext.Provider>
           </div>

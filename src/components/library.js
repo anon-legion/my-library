@@ -6,7 +6,7 @@ import '../App.css'
 const header = ['Title', 'Author', 'Progress', 'Status'];
 
 const Library = () => {
-    const { myLibrary, setMyLibrary } = useContext(LibraryContext);
+    const myLibrary = useContext(LibraryContext);
 
     return (
         // <div>

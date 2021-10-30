@@ -1,31 +1,59 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
+import { LibraryContext } from '../libraryContext';
 import 'bulma/css/bulma.min.css';
 import '../App.css'
 
 
 const NewBook = () => {
+    const { myLibrary, setMyLibrary } = useContext(LibraryContext);
+
+
     const [newBook, setNewBook] = useState(() => ({
         title: '',
         author: '',
         isRead: false,
         isOwned: false
-    }))
+    }));
+
+    const [editMode, setEditMode] = useState(() => ({
+        isEdit: false,
+        editIndex: null
+    }));
 
     const handleSubmit = (e) => {
         e.preventDefault();
-    }
+        setMyLibrary(prevState => [...prevState, newBook]);
+    };
+
 
     const inputOnChange = (e) => {
         setNewBook(prevState => {
-            return {...prevState, [e.target.name]: e.target.value}
+            return {...prevState, [e.target.name]: e.target.value};
         });
-    }
+    };
+
 
     const selectOnChange = (e) => {
         setNewBook(prevState => {
-            return {...prevState, [e.target.name]: !prevState[e.target.name] }
+            return {...prevState, [e.target.name]: !prevState[e.target.name] };
         })
     }
+
+    
+    useEffect(() => {
+        // resets form on successful submit of newBook to a myLibrary and on first render
+        setNewBook(prevState => {
+            return {
+                title: '',
+                author: '',
+                isRead: false,
+                isOwned: false
+            };
+        });
+        // initializes all select nodes to none/null option selected
+        document.querySelectorAll('select').forEach(selectNode => selectNode.selectedIndex = "-1");
+    }, [myLibrary]);
+
 
     return (
         <form onSubmit={handleSubmit}>
@@ -70,7 +98,6 @@ const NewBook = () => {
                         <div className="control">
                             <div className="select">
                                 <select id="selectProgress" defaultValue={null}  name="isRead" onChange={selectOnChange} required>
-                                    <option value="default" hidden>--select--</option>
                                     <option>Read</option>
                                     <option>Unread</option>
                                 </select>
@@ -84,7 +111,6 @@ const NewBook = () => {
                         <div className="control">
                             <div className="select">
                                 <select id="selectStatus" defaultValue={null} name="isOwned" onChange={selectOnChange} required>
-                                    <option value="default" hidden>--select--</option>
                                     <option>Acquired</option>
                                     <option>Lacking</option>
                                 </select>
