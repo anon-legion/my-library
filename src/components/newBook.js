@@ -5,7 +5,7 @@ import '../App.css'
 
 
 const NewBook = () => {
-    const { myLibrary, setMyLibrary } = useContext(LibraryContext);
+    const { myLibrary, setMyLibrary, editBook } = useContext(LibraryContext);
 
 
     const [newBook, setNewBook] = useState(() => ({
@@ -15,10 +15,26 @@ const NewBook = () => {
         isOwned: false
     }));
 
-    const [editMode, setEditMode] = useState(() => ({
-        isEdit: false,
-        editIndex: null
-    }));
+
+    useEffect(() => {
+        // resets form on successful submit of newBook to a myLibrary and on first render
+        if (editBook.bookIndex < 0) {
+            setNewBook(prevState => {
+                return {
+                    title: '',
+                    author: '',
+                    isRead: false,
+                    isOwned: false
+                };
+            });
+            // initializes all select nodes to none/null option selected
+            document.querySelectorAll('select').forEach(selectNode => selectNode.selectedIndex = "-1");
+        } else {
+            setNewBook(prevState => editBook.bookState);
+            setSelectNodes(editBook.bookState.isRead, editBook.bookState.isOwned);
+        }
+    }, [myLibrary, editBook]);
+
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -35,24 +51,14 @@ const NewBook = () => {
 
     const selectOnChange = (e) => {
         setNewBook(prevState => {
-            return {...prevState, [e.target.name]: !prevState[e.target.name] };
+            return {...prevState, [e.target.name]: e.target.value === "true" ? true : false };
         })
-    }
+    };
 
-    
-    useEffect(() => {
-        // resets form on successful submit of newBook to a myLibrary and on first render
-        setNewBook(prevState => {
-            return {
-                title: '',
-                author: '',
-                isRead: false,
-                isOwned: false
-            };
-        });
-        // initializes all select nodes to none/null option selected
-        document.querySelectorAll('select').forEach(selectNode => selectNode.selectedIndex = "-1");
-    }, [myLibrary]);
+    // set the values of select tags based on boolean values from isRead and isOwned
+    function setSelectNodes(read, own) {
+        document.querySelectorAll('select').forEach((selectNode, i) => selectNode.selectedIndex = arguments[i] ? "0" : "1")
+    }
 
 
     return (
@@ -98,8 +104,8 @@ const NewBook = () => {
                         <div className="control">
                             <div className="select">
                                 <select id="selectProgress" defaultValue={null}  name="isRead" onChange={selectOnChange} required>
-                                    <option>Read</option>
-                                    <option>Unread</option>
+                                    <option value={true}>Read</option>
+                                    <option value={false}>Unread</option>
                                 </select>
                             </div>
                         </div>
@@ -111,8 +117,8 @@ const NewBook = () => {
                         <div className="control">
                             <div className="select">
                                 <select id="selectStatus" defaultValue={null} name="isOwned" onChange={selectOnChange} required>
-                                    <option>Acquired</option>
-                                    <option>Lacking</option>
+                                    <option value={true}>Acquired</option>
+                                    <option value={false}>Lacking</option>
                                 </select>
                             </div>
                         </div>

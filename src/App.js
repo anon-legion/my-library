@@ -28,13 +28,14 @@ function App() {
   const [myLibrary, setMyLibrary] = useState(() => [lettersFromAStoic, theOdyssey, thePrince]);
 
   const [editBook, setEditBook] = useState(() => ({
+    bookIndex: -1,
     bookState: {
-      title: null,
-      author: null,
+      title: "",
+      author: "",
       isRead: false,
       isOwned: false
     }
-  }));
+  }))
 
   return (
     <>
@@ -47,7 +48,7 @@ function App() {
       <main className="section">
         <div className="container">
           <div className="box has-background-info">
-            <LibraryContext.Provider value={ myLibrary }>
+            <LibraryContext.Provider value={{ myLibrary, setEditBook }}>
               <Library />
             </LibraryContext.Provider>
           </div>
@@ -57,7 +58,7 @@ function App() {
         <div className="container">
           <span className="is-size-5">Add new book</span>
           <div className="box has-background-info">
-            <LibraryContext.Provider value={{ myLibrary, setMyLibrary }}>
+            <LibraryContext.Provider value={{ myLibrary, setMyLibrary, editBook }}>
               <NewBook />
             </LibraryContext.Provider>
           </div>
