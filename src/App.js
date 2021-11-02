@@ -57,7 +57,7 @@ function App() {
       </main>
       <div className="section">
         <div className="container">
-          <span className="is-size-5">Add new book</span>
+          <span className="is-size-5">Add/Edit Book</span>
           <div className="box has-background-info">
             <LibraryContext.Provider value={{ myLibrary, setMyLibrary, editBook }}>
               <NewBookForm />
