@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { LibraryContext } from '../libraryContext';
 import 'bulma/css/bulma.min.css';
 import '../App.css'
@@ -8,7 +8,31 @@ const header = ['Title', 'Author', 'Progress', 'Status'];
 const Library = () => {
     const { myLibrary, setEditBook } = useContext(LibraryContext);
 
-    const trOnDoubleClick = (e) => {
+    // state storing selected row ID used for <tr> className to highlight selected row
+    const [selectedRowId, setSelectedRowId] = useState(() => null);
+
+
+    useEffect(() => {
+        // reset editBook state to default on myLibrary re-render to allow newBook form to reset after editing a book in myLibrary
+        setEditBook(prevState => {
+            return {                
+                bookIndex: -1,
+                bookState: {                    
+                    title: "",
+                    author: "",
+                    isRead: false,
+                    isOwned: false
+                }
+            };
+        });
+        // reset selectedRowId to remove highlight of selected row after edit
+        setSelectedRowId(prevState => null);
+    }, [myLibrary, setEditBook]);
+
+
+    const trOnDoubleClick = (e, i) => {
+        // e refers to event and i the index given during mapping, used by <tr>
+        setSelectedRowId(prevState => i);
         setEditBook(prevState => {
             return {
                 bookIndex: e.currentTarget.id,
@@ -16,6 +40,7 @@ const Library = () => {
             };
         });
     };
+
 
     return (
         // <div>
@@ -28,7 +53,8 @@ const Library = () => {
                 <tbody>
                     {myLibrary.map((book, i) => {
                         return (
-                            <tr key={i} id={i} onDoubleClick={trOnDoubleClick}>
+                            // className is changed if selectedRowId is changed to i, i is passed in together with event (e) onDoubleClick
+                            <tr className={selectedRowId === i ? "is-selected" : null} key={i} id={i} onDoubleClick={(e) => trOnDoubleClick(e, i)}>
                                 <td className="mobile-flex" data-header={header[0]}>{book.title}</td>
                                 <td className="mobile-flex" data-header={header[1]}>{book.author}</td>
                                 <td className="mobile-flex" data-header={header[2]}>{book.isRead ? 'Read' : 'Unread'}</td>

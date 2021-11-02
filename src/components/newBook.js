@@ -4,7 +4,7 @@ import 'bulma/css/bulma.min.css';
 import '../App.css'
 
 
-const NewBook = () => {
+const NewBookForm = () => {
     const { myLibrary, setMyLibrary, editBook } = useContext(LibraryContext);
 
 
@@ -17,7 +17,7 @@ const NewBook = () => {
 
 
     useEffect(() => {
-        // resets form on successful submit of newBook to a myLibrary and on first render
+        // reset form on successful submit of newBook to myLibrary and on first render
         if (editBook.bookIndex < 0) {
             setNewBook(prevState => {
                 return {
@@ -27,9 +27,10 @@ const NewBook = () => {
                     isOwned: false
                 };
             });
-            // initializes all select nodes to none/null option selected
+            // initialize all <select> nodes to none/null option selected
             document.querySelectorAll('select').forEach(selectNode => selectNode.selectedIndex = "-1");
         } else {
+            // fill newBook form with editBook state to edit existing book
             setNewBook(prevState => editBook.bookState);
             setSelectNodes(editBook.bookState.isRead, editBook.bookState.isOwned);
         }
@@ -37,8 +38,17 @@ const NewBook = () => {
 
 
     const handleSubmit = (e) => {
+        // used by form to either create new book or edit existing and preventing default form submit
         e.preventDefault();
-        setMyLibrary(prevState => [...prevState, newBook]);
+        if (editBook.bookIndex === -1) {
+            // create new book
+            setMyLibrary(prevState => [...prevState, newBook]);
+        } else {
+            //edit existing book by creating shallow copy of myLibrary state and editing the book in the shallow copy
+            let books = [...myLibrary];
+            books[editBook.bookIndex] = {...newBook};
+            setMyLibrary(prevState => [...books]);
+        }
     };
 
 
@@ -48,14 +58,14 @@ const NewBook = () => {
         });
     };
 
-
+    // handler used by <select> to convert "true" or "false" values to boolean since <select> only gives string values
     const selectOnChange = (e) => {
         setNewBook(prevState => {
             return {...prevState, [e.target.name]: e.target.value === "true" ? true : false };
         })
     };
 
-    // set the values of select tags based on boolean values from isRead and isOwned
+    // set the values of select tags based on boolean values from isRead and isOwned, helper function used by useEffect
     function setSelectNodes(read, own) {
         document.querySelectorAll('select').forEach((selectNode, i) => selectNode.selectedIndex = arguments[i] ? "0" : "1")
     }
@@ -132,4 +142,4 @@ const NewBook = () => {
     )
 }
 
-export default NewBook;
+export default NewBookForm;

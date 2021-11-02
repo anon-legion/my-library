@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Library from './components/library.js';
-import NewBook from './components/newBook.js';
+import NewBookForm from './components/newBook.js';
 import { LibraryContext } from './libraryContext.js';
 import 'bulma/css/bulma.min.css';
 import './App.css';
@@ -29,13 +29,14 @@ function App() {
 
   const [editBook, setEditBook] = useState(() => ({
     bookIndex: -1,
-    bookState: {
+    bookState: {      
       title: "",
       author: "",
       isRead: false,
       isOwned: false
     }
   }))
+
 
   return (
     <>
@@ -59,7 +60,7 @@ function App() {
           <span className="is-size-5">Add new book</span>
           <div className="box has-background-info">
             <LibraryContext.Provider value={{ myLibrary, setMyLibrary, editBook }}>
-              <NewBook />
+              <NewBookForm />
             </LibraryContext.Provider>
           </div>
         </div>
