@@ -35,15 +35,16 @@ const Library = () => {
         setSelectedRowId(prevState => i);
         setEditBook(prevState => {
             return {
-                bookIndex: e.currentTarget.id,
-                bookState: {...myLibrary[e.currentTarget.id]}
+                bookIndex: i,
+                bookState: {...myLibrary[i]}
             };
         });
     };
 
 
+
     return (
-        // <div>
+        <>
             <table className="table is-fullwidth is-hoverable">
                 <thead>
                     <tr>
@@ -54,7 +55,7 @@ const Library = () => {
                     {myLibrary.map((book, i) => {
                         return (
                             // className is changed if selectedRowId is changed to i, i is passed in together with event (e) onDoubleClick
-                            <tr className={selectedRowId === i ? "is-selected" : null} key={i} id={i} onDoubleClick={(e) => trOnDoubleClick(e, i)}>
+                            <tr className={selectedRowId === i ? "is-selected" : null} key={i} onDoubleClick={(e) => trOnDoubleClick(e, i)}>
                                 <td className="mobile-flex" data-header={header[0]}>{book.title}</td>
                                 <td className="mobile-flex" data-header={header[1]}>{book.author}</td>
                                 <td className="mobile-flex" data-header={header[2]}>{book.isRead ? 'Read' : 'Unread'}</td>
@@ -64,7 +65,7 @@ const Library = () => {
                     })}
                 </tbody>
             </table>
-        // </div>
+        </>
     );
 }
 

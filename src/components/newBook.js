@@ -42,7 +42,7 @@ const NewBookForm = () => {
         e.preventDefault();
         if (editBook.bookIndex === -1) {
             // create new book
-            setMyLibrary(prevState => [...prevState, newBook]);
+            setMyLibrary(prevState => [newBook, ...prevState]);
         } else {
             //edit existing book by creating shallow copy of myLibrary state and editing the book in the shallow copy
             let books = [...myLibrary];
