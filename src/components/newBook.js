@@ -136,7 +136,7 @@ const NewBookForm = () => {
                 </div>
             </div>
             <div className="mobile-flex-button">
-                <input className="button is-link is-outlined is-inverted" type="submit" />
+                <button className="button is-link is-outlined is-inverted" type="submit">Submit</button>
             </div>
         </form>
     )
