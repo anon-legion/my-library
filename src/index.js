@@ -7,6 +7,5 @@ ReactDOM.render(
   <React.StrictMode>
     <App />
   </React.StrictMode>,
-  // document.querySelector('body')
-  document.getElementById('root')
+  document.getElementById('root'),
 );

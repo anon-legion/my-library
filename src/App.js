@@ -1,43 +1,11 @@
-import React, { useState } from 'react';
-import Library from './components/library.js';
-import NewBookForm from './components/newBook.js';
-import { LibraryContext } from './libraryContext.js';
+import React from 'react';
+import Library from './components/library';
+import NewBookForm from './components/newBook';
+import { LibraryProvider } from './libraryContext';
 import 'bulma/css/bulma.min.css';
 import './App.css';
 
-const lettersFromAStoic = {
-  title:'Letters from a Stoic',
-  author: 'Seneca',
-  isRead: true,
-  isOwned: true,
-};
-const theOdyssey = {
-  title:'The Odyssey',
-  author: 'Homer',
-  isRead: false,
-  isOwned: true,
-};
-const thePrince = {
-  title: 'The Prince',
-  author: 'Niccolo Machiavelli',
-  isRead: true,
-  isOwned: true,
-};
-
 function App() {
-  const [myLibrary, setMyLibrary] = useState(() => [lettersFromAStoic, theOdyssey, thePrince]);
-
-  const [editBook, setEditBook] = useState(() => ({
-    bookIndex: -1,
-    bookState: {      
-      title: "",
-      author: "",
-      isRead: false,
-      isOwned: false
-    }
-  }))
-
-
   return (
     <>
       <header className="hero">
@@ -47,24 +15,22 @@ function App() {
         </div>
       </header>
       <main className="section">
-        <div className="container">
-          <div className="box has-background-info">
-            <LibraryContext.Provider value={{ myLibrary, setEditBook }}>
+        <LibraryProvider>
+          <div className="container">
+            <div className="box has-background-info">
               <Library />
-            </LibraryContext.Provider>
+            </div>
           </div>
-        </div>
+          <div className="section">
+            <div className="container">
+              <span className="is-size-5">Add/Edit Book (double click row to edit)</span>
+              <div className="box has-background-info">
+                <NewBookForm />
+              </div>
+            </div>
+          </div>
+        </LibraryProvider>
       </main>
-      <div className="section">
-        <div className="container">
-          <span className="is-size-5">Add/Edit Book (double click row to edit)</span>
-          <div className="box has-background-info">
-            <LibraryContext.Provider value={{ myLibrary, setMyLibrary, editBook }}>
-              <NewBookForm />
-            </LibraryContext.Provider>
-          </div>
-        </div>
-      </div>
     </>
   );
 }
