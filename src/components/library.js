@@ -6,15 +6,15 @@ import '../App.css';
 const header = ['Title', 'Author', 'Progress', 'Status'];
 
 function Library() {
-  const { myLibrary, setEditBook } = useLibraryContext();
+  const { myLibraryMemo, setEditBook } = useLibraryContext();
 
   // state storing selected row ID used for <tr> className to highlight selected row
   const [selectedRowId, setSelectedRowId] = useState(() => null);
 
   useEffect(() => {
-    // reset editBook state to default on myLibrary re-render
-    // allows newBook form to reset after editing a book in myLibrary
-    setEditBook((prevState) => ({
+    // reset editBook state to default on myLibraryMemo re-render
+    // allows newBook form to reset after editing a book in myLibraryMemo
+    setEditBook(() => ({
       bookIndex: -1,
       bookState: {
         title: '',
@@ -24,15 +24,15 @@ function Library() {
       },
     }));
     // reset selectedRowId to remove highlight of selected row after edit
-    setSelectedRowId((prevState) => null);
-  }, [myLibrary, setEditBook]);
+    setSelectedRowId(() => null);
+  }, [myLibraryMemo, setEditBook]);
 
   const trOnDoubleClick = (e, i) => {
     // e refers to event and i the index given during mapping, used by <tr>
-    setSelectedRowId((prevState) => i);
-    setEditBook((prevState) => ({
+    setSelectedRowId(() => i);
+    setEditBook(() => ({
       bookIndex: i,
-      bookState: { ...myLibrary[i] },
+      bookState: { ...myLibraryMemo[i] },
     }));
   };
 
@@ -44,7 +44,7 @@ function Library() {
         </tr>
       </thead>
       <tbody>
-        {myLibrary.map(({ title, author, isRead, isOwned }, i) => (
+        {myLibraryMemo.map(({ title, author, isRead, isOwned }, i) => (
           // className is changed if selectedRowId is changed to i
           // i is passed in together with event (e) onDoubleClick
           <tr className={selectedRowId === i ? 'is-selected' : null} key={title} onDoubleClick={(e) => trOnDoubleClick(e, i)}>

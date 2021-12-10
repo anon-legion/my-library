@@ -1,4 +1,4 @@
-import React, { useState, createContext, useContext } from 'react';
+import React, { useState, createContext, useContext, useMemo } from 'react';
 // import PropTypes from 'prop-types';
 
 const lettersFromAStoic = {
@@ -39,11 +39,15 @@ export function LibraryProvider({ children }) {
     },
   }));
 
+  const myLibraryMemo = useMemo(() => [...myLibrary], [myLibrary]);
+
+  const editBookMemo = useMemo(() => ({ ...editBook }), [editBook]);
+
   return (
     <LibraryContext.Provider value={{
-      myLibrary,
+      myLibraryMemo,
       setMyLibrary,
-      editBook,
+      editBookMemo,
       setEditBook,
     }}
     >
