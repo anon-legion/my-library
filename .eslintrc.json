@@ -23,8 +23,6 @@
         "jsx-a11y"
     ],
     "rules": {
-        // requires contexts to be wrapped in useMemo or useCallback
-        "react/jsx-no-constructed-context-values": 0,
         // requires that react components be function delcarations (eg. function componentName(){})
         "react/function-component-definition": [2, {
             "namedComponents": "function-declaration",

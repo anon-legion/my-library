@@ -4,7 +4,7 @@ import 'bulma/css/bulma.min.css';
 import '../App.css';
 
 function NewBookForm() {
-  const { myLibraryMemo, setMyLibrary, editBookMemo } = useLibraryContext();
+  const { myLibrary, setMyLibrary, editBook } = useLibraryContext();
 
   const [newBook, setNewBook] = useState(() => ({
     title: '',
@@ -24,8 +24,8 @@ function NewBookForm() {
   }
 
   useEffect(() => {
-    // reset form on successful submit of newBook to myLibraryMemo and on first render
-    if (editBookMemo.bookIndex < 0) {
+    // reset form on successful submit of newBook to myLibrary and on first render
+    if (editBook.bookIndex < 0) {
       setNewBook(() => ({
         title: '',
         author: '',
@@ -41,22 +41,22 @@ function NewBookForm() {
         node.selectedIndex = '-1';
       });
     } else {
-      // fill newBook form with editBookMemo state to edit existing book
-      setNewBook(() => editBookMemo.bookState);
-      setSelectNodes(editBookMemo.bookState.isRead, editBookMemo.bookState.isOwned);
+      // fill newBook form with editBook state to edit existing book
+      setNewBook(() => editBook.bookState);
+      setSelectNodes(editBook.bookState.isRead, editBook.bookState.isOwned);
     }
-  }, [myLibraryMemo, editBookMemo]);
+  }, [myLibrary, editBook]);
 
   const handleSubmit = (e) => {
     // used by form to either create new book or edit existing and preventing default form submit
     e.preventDefault();
-    if (editBookMemo.bookIndex === -1) {
+    if (editBook.bookIndex === -1) {
       // create new book
       setMyLibrary((prevState) => [newBook, ...prevState]);
     } else {
-      // creating shallow copy of myLibraryMemo to edit book
-      const books = [...myLibraryMemo];
-      books[editBookMemo.bookIndex] = { ...newBook };
+      // creating shallow copy of myLibrary to edit book
+      const books = [...myLibrary];
+      books[editBook.bookIndex] = { ...newBook };
       setMyLibrary(() => [...books]);
     }
   };

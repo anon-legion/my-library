@@ -39,18 +39,13 @@ export function LibraryProvider({ children }) {
     },
   }));
 
-  const myLibraryMemo = useMemo(() => [...myLibrary], [myLibrary]);
-
-  const editBookMemo = useMemo(() => ({ ...editBook }), [editBook]);
+  // memoized states being passed as context to avoid unnecessary re-rendering
+  const stateContext = useMemo(() => (
+    { myLibrary, editBook, setMyLibrary, setEditBook }
+  ), [myLibrary, editBook]);
 
   return (
-    <LibraryContext.Provider value={{
-      myLibraryMemo,
-      setMyLibrary,
-      editBookMemo,
-      setEditBook,
-    }}
-    >
+    <LibraryContext.Provider value={stateContext}>
       {children}
     </LibraryContext.Provider>
   );
