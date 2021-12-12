@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useLibraryContext } from '../libraryContext';
 import 'bulma/css/bulma.min.css';
 import '../App.css';
@@ -13,12 +13,16 @@ function NewBookForm() {
     isOwned: false,
   }));
 
+  // reference to the dropdown menus of form
+  // initialize as object to reference multiple elements
+  const dropdownRef = useRef({});
+
   // set the values of select tags based on boolean values from isRead and isOwned
   // helper function used by useEffect
   // takes in two booleans 'read' and 'owned'
   function setSelectNodes(...args) {
-    document.querySelectorAll('select').forEach((selectNode, i) => {
-      const node = selectNode;
+    Object.values(dropdownRef.current).forEach((element, i) => {
+      const node = element;
       node.selectedIndex = args[i] ? '0' : '1';
     });
   }
@@ -32,12 +36,12 @@ function NewBookForm() {
         isRead: false,
         isOwned: false,
       }));
-      // initialize all <select> nodes to none/null option selected
-      document.querySelectorAll('select').forEach((selectNode) => {
-        // 'selectNode' and 'node' are references to the same DOM node
+      // initialize all <select> nodes to none/null option
+      Object.values(dropdownRef.current).forEach((element) => {
+        // 'element' and 'node' are references to the same DOM node
         // but modifying 'node' doesn't mutate the 'arguments' object of the function
         // arguments[0] remains just a reference to the DOM node element
-        const node = selectNode;
+        const node = element;
         node.selectedIndex = '-1';
       });
     } else {
@@ -112,7 +116,15 @@ function NewBookForm() {
             <label className="label" htmlFor="selectProgress">Progress</label>
             <div className="control">
               <div className="select">
-                <select id="selectProgress" defaultValue={null} name="isRead" onChange={selectOnChange} required>
+                <select
+                  // add element to dropdownRef.current object with key 'progress
+                  ref={(el) => { dropdownRef.current.progress = el; }}
+                  id="selectProgress"
+                  defaultValue={null}
+                  name="isRead"
+                  onChange={selectOnChange}
+                  required
+                >
                   <option value>Read</option>
                   <option value={false}>Unread</option>
                 </select>
@@ -125,7 +137,15 @@ function NewBookForm() {
             <label className="label" htmlFor="selectStatus">Status</label>
             <div className="control">
               <div className="select">
-                <select id="selectStatus" defaultValue={null} name="isOwned" onChange={selectOnChange} required>
+                <select
+                  // add element to dropdownRef.current object with key 'status'
+                  ref={(el) => { dropdownRef.current.status = el; }}
+                  id="selectStatus"
+                  defaultValue={null}
+                  name="isOwned"
+                  onChange={selectOnChange}
+                  required
+                >
                   <option value>Acquired</option>
                   <option value={false}>Lacking</option>
                 </select>

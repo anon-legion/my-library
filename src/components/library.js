@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useLibraryContext } from '../libraryContext';
 import 'bulma/css/bulma.min.css';
 import '../App.css';
@@ -27,14 +27,14 @@ function Library() {
     setSelectedRowId(() => null);
   }, [myLibrary, setEditBook]);
 
-  const trOnDoubleClick = (i) => {
+  const trOnDoubleClick = useCallback((i) => {
     // e refers to event and i the index given during mapping, used by <tr>
     setSelectedRowId(() => i);
     setEditBook(() => ({
       bookIndex: i,
       bookState: { ...myLibrary[i] },
     }));
-  };
+  }, []);
 
   return (
     <table className="table is-fullwidth is-hoverable">
