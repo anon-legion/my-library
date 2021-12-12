@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { useLibraryContext } from '../libraryContext';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { useLibraryContext } from './libraryContext';
 import 'bulma/css/bulma.min.css';
 import '../App.css';
 
@@ -65,14 +65,14 @@ function NewBookForm() {
     }
   };
 
-  const inputOnChange = (e) => {
+  const inputOnChange = useCallback((e) => {
     setNewBook((prevState) => ({ ...prevState, [e.target.name]: e.target.value }));
-  };
+  }, []);
 
   // handler used by <select> to convert "true" or "false" values to boolean since
-  const selectOnChange = (e) => {
+  const selectOnChange = useCallback((e) => {
     setNewBook((prevState) => ({ ...prevState, [e.target.name]: e.target.value === 'true' }));
-  };
+  }, []);
 
   return (
     <form onSubmit={handleSubmit}>

@@ -1,9 +1,14 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { useLibraryContext } from '../libraryContext';
+import { useLibraryContext } from './libraryContext';
 import 'bulma/css/bulma.min.css';
 import '../App.css';
 
-const header = ['Title', 'Author', 'Progress', 'Status'];
+const HEADER = {
+  TITLE: 'Title',
+  AUTHOR: 'Author',
+  PROGRESS: 'Progress',
+  STATUS: 'Status',
+};
 
 function Library() {
   const { myLibrary, setEditBook } = useLibraryContext();
@@ -40,7 +45,7 @@ function Library() {
     <table className="table is-fullwidth is-hoverable">
       <thead>
         <tr>
-          {header.map((label) => <th className="desktop" key={label}>{label}</th>)}
+          {Object.values(HEADER).map((label) => <th className="desktop" key={label}>{label}</th>)}
         </tr>
       </thead>
       <tbody>
@@ -48,10 +53,10 @@ function Library() {
           // className is changed if selectedRowId is changed to i
           // i is passed in together with event (e) onDoubleClick
           <tr className={selectedRowId === i ? 'is-selected' : null} key={title} onDoubleClick={() => trOnDoubleClick(i)}>
-            <td className="mobile-flex" data-header={header[0]}>{title}</td>
-            <td className="mobile-flex" data-header={header[1]}>{author}</td>
-            <td className="mobile-flex" data-header={header[2]}>{isRead ? 'Read' : 'Unread'}</td>
-            <td className="mobile-flex" data-header={header[3]}>{isOwned ? 'Acquired' : 'Lacking'}</td>
+            <td className="mobile-flex" data-header={HEADER.TITLE}>{title}</td>
+            <td className="mobile-flex" data-header={HEADER.AUTHOR}>{author}</td>
+            <td className="mobile-flex" data-header={HEADER.PROGRESS}>{isRead ? 'Read' : 'Unread'}</td>
+            <td className="mobile-flex" data-header={HEADER.STATUS}>{isOwned ? 'Acquired' : 'Lacking'}</td>
           </tr>
         ))}
       </tbody>

@@ -1,7 +1,7 @@
 import React from 'react';
 import Library from './components/library';
 import NewBookForm from './components/newBook';
-import { LibraryProvider } from './libraryContext';
+import { LibraryProvider } from './components/libraryContext';
 import 'bulma/css/bulma.min.css';
 import './App.css';
 
