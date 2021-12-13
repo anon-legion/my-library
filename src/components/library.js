@@ -39,7 +39,7 @@ function Library() {
       bookIndex: i,
       bookState: { ...myLibrary[i] },
     }));
-  }, []);
+  }, [myLibrary]);
 
   return (
     <table className="table is-fullwidth is-hoverable">

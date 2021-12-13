@@ -15,17 +15,40 @@ function NewBookForm() {
 
   // reference to the dropdown menus of form
   // initialize as object to reference multiple elements
-  const dropdownRef = useRef({});
+  const inputRef = useRef({});
 
   // set the values of select tags based on boolean values from isRead and isOwned
   // helper function used by useEffect
   // takes in two booleans 'read' and 'owned'
   function setSelectNodes(...args) {
-    Object.values(dropdownRef.current).forEach((element, i) => {
+    Object.values(inputRef.current).forEach((element, i) => {
       const node = element;
       node.selectedIndex = args[i] ? '0' : '1';
     });
   }
+
+  // const isDuplicate = useCallback((newTitle) => {
+  //   const duplicateTitleIndex = myLibrary.findIndex(
+  //     // find index of book with same title that is not the same book being edited
+  //     (book, i) => book.title.toLowerCase() === newTitle && i !== editBook.bookIndex,
+  //   );
+  //   return duplicateTitleIndex >= 0;
+  // }, [myLibrary, editBook.bookIndex]);
+
+  // custom form validation of event to check if title already exists in myLibrary
+  // helper function used by input onChange event handler
+  const validate = () => {
+    const element = inputRef.current.title;
+    const newTitle = newBook.title.toLowerCase();
+    if (myLibrary.findIndex(
+      (book, i) => book.title.toLowerCase() === newTitle && i !== editBook.bookIndex,
+    ) >= 0) {
+      inputRef.current.title.setCustomValidity('Title already exists');
+      return false;
+    }
+    element.setCustomValidity('');
+    return true;
+  };
 
   useEffect(() => {
     // reset form on successful submit of newBook to myLibrary and on first render
@@ -37,7 +60,7 @@ function NewBookForm() {
         isOwned: false,
       }));
       // initialize all <select> nodes to none/null option
-      Object.values(dropdownRef.current).forEach((element) => {
+      Object.values(inputRef.current).forEach((element) => {
         // 'element' and 'node' are references to the same DOM node
         // but modifying 'node' doesn't mutate the 'arguments' object of the function
         // arguments[0] remains just a reference to the DOM node element
@@ -54,6 +77,8 @@ function NewBookForm() {
   const handleSubmit = (e) => {
     // used by form to either create new book or edit existing and preventing default form submit
     e.preventDefault();
+    const isValid = validate();
+    if (!isValid) return;
     if (editBook.bookIndex === -1) {
       // create new book
       setMyLibrary((prevState) => [newBook, ...prevState]);
@@ -66,6 +91,10 @@ function NewBookForm() {
   };
 
   const inputOnChange = useCallback((e) => {
+    // console.log(e.target);
+    // e.target.setCustomValidity('e.target');
+    // console.log(inputRef.current.title);
+    // inputRef.current.title.setCustomValidity('inputRef');
     setNewBook((prevState) => ({ ...prevState, [e.target.name]: e.target.value }));
   }, []);
 
@@ -82,6 +111,7 @@ function NewBookForm() {
             <label className="label" htmlFor="inputTitle">Title</label>
             <div className="control">
               <input
+                ref={(el) => { inputRef.current.title = el; }}
                 className="input"
                 type="text"
                 id="inputTitle"
@@ -117,8 +147,8 @@ function NewBookForm() {
             <div className="control">
               <div className="select">
                 <select
-                  // add element to dropdownRef.current object with key 'progress
-                  ref={(el) => { dropdownRef.current.progress = el; }}
+                  // add element to inputRef.current object with key 'progress
+                  ref={(el) => { inputRef.current.progress = el; }}
                   id="selectProgress"
                   defaultValue={null}
                   name="isRead"
@@ -138,8 +168,8 @@ function NewBookForm() {
             <div className="control">
               <div className="select">
                 <select
-                  // add element to dropdownRef.current object with key 'status'
-                  ref={(el) => { dropdownRef.current.status = el; }}
+                  // add element to inputRef.current object with key 'status'
+                  ref={(el) => { inputRef.current.status = el; }}
                   id="selectStatus"
                   defaultValue={null}
                   name="isOwned"
@@ -155,7 +185,7 @@ function NewBookForm() {
         </div>
       </div>
       <div className="mobile-flex-button">
-        <button className="button is-link is-outlined is-inverted" type="submit">Submit</button>
+        <button className="button is-link is-outlined is-inverted has-text-weight-semibold" type="submit">Submit</button>
       </div>
     </form>
   );
