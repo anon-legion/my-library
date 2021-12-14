@@ -22,6 +22,13 @@ const thePrince = {
 
 const LibraryContext = createContext();
 
+export const initBookState = {
+  title: '',
+  author: '',
+  isRead: false,
+  isOwned: false,
+};
+
 export function useLibraryContext() {
   return useContext(LibraryContext);
 }
@@ -31,12 +38,7 @@ export function LibraryProvider({ children }) {
 
   const [editBook, setEditBook] = useState(() => ({
     bookIndex: -1,
-    bookState: {
-      title: '',
-      author: '',
-      isRead: false,
-      isOwned: false,
-    },
+    bookState: initBookState,
   }));
 
   // memoized states being passed as context to avoid unnecessary re-rendering

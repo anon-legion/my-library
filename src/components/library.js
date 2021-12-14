@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { useLibraryContext } from './libraryContext';
+import { initBookState, useLibraryContext } from './libraryContext';
 import 'bulma/css/bulma.min.css';
 import '../App.css';
 
@@ -21,12 +21,7 @@ function Library() {
     // allows newBook form to reset after editing a book in myLibrary
     setEditBook(() => ({
       bookIndex: -1,
-      bookState: {
-        title: '',
-        author: '',
-        isRead: false,
-        isOwned: false,
-      },
+      bookState: initBookState,
     }));
     // reset selectedRowId to remove highlight of selected row after edit
     setSelectedRowId(() => null);

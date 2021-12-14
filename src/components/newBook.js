@@ -1,17 +1,12 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { useLibraryContext } from './libraryContext';
+import { useLibraryContext, initBookState } from './libraryContext';
 import 'bulma/css/bulma.min.css';
 import '../App.css';
 
 function NewBookForm() {
   const { myLibrary, setMyLibrary, editBook } = useLibraryContext();
 
-  const [newBook, setNewBook] = useState(() => ({
-    title: '',
-    author: '',
-    isRead: false,
-    isOwned: false,
-  }));
+  const [newBook, setNewBook] = useState(() => initBookState);
 
   // reference to the dropdown menus of form
   // initialize as object to reference multiple elements
@@ -19,7 +14,7 @@ function NewBookForm() {
 
   // set the values of select tags based on boolean values from isRead and isOwned
   // helper function used by useEffect
-  // takes in two booleans 'read' and 'owned'
+  // takes in two booleans 'read' and 'owned' positionally
   function setSelectNodes(...args) {
     Object.values(inputRef.current).forEach((element, i) => {
       const node = element;
@@ -27,6 +22,7 @@ function NewBookForm() {
     });
   }
 
+  // helper function used by validate()
   const isDuplicate = (newTitle) => {
     const duplicateTitleIndex = myLibrary.findIndex(
       // find index of book with same title that is not the same book being edited
@@ -42,27 +38,22 @@ function NewBookForm() {
     const newTitle = newBook.title.toLowerCase();
     if (isDuplicate(newTitle)) {
       inputRef.current.title.setCustomValidity('Title already exists');
-      return false;
+      return;
     }
     element.setCustomValidity('');
-    return true;
   };
 
+  // validate title on change of newBook.title input
   useEffect(() => validate(), [newBook.title]);
 
   useEffect(() => {
     // reset form on successful submit of newBook to myLibrary and on first render
     if (editBook.bookIndex < 0) {
-      setNewBook(() => ({
-        title: '',
-        author: '',
-        isRead: false,
-        isOwned: false,
-      }));
+      setNewBook(() => initBookState);
       // initialize all <select> nodes to none/null option
       Object.values(inputRef.current).forEach((element) => {
         // 'element' and 'node' are references to the same DOM node
-        // but modifying 'node' doesn't mutate the 'arguments' object of the function
+        // but modifying 'node' vs 'element' doesn't mutate the 'arguments' object of the function
         // arguments[0] remains just a reference to the DOM node element
         const node = element;
         node.selectedIndex = '-1';
@@ -90,9 +81,6 @@ function NewBookForm() {
 
   const inputOnChange = useCallback((e) => {
     setNewBook((prevState) => ({ ...prevState, [e.target.name]: e.target.value }));
-    // if (e.target.name === 'title') {
-    //   validate();
-    // }
   }, []);
 
   // handler used by <select> to convert "true" or "false" values to boolean since
@@ -108,6 +96,7 @@ function NewBookForm() {
             <label className="label" htmlFor="inputTitle">Title</label>
             <div className="control">
               <input
+                // add element to inputRef.current object with key of 'title'
                 ref={(el) => { inputRef.current.title = el; }}
                 className="input"
                 type="text"
@@ -116,7 +105,6 @@ function NewBookForm() {
                 name="title"
                 value={newBook.title}
                 onChange={inputOnChange}
-                // onBlur={validate}
                 required
               />
             </div>
@@ -145,7 +133,7 @@ function NewBookForm() {
             <div className="control">
               <div className="select">
                 <select
-                  // add element to inputRef.current object with key 'progress
+                  // add element to inputRef.current object with key of 'progress'
                   ref={(el) => { inputRef.current.progress = el; }}
                   id="selectProgress"
                   defaultValue={null}
@@ -166,7 +154,7 @@ function NewBookForm() {
             <div className="control">
               <div className="select">
                 <select
-                  // add element to inputRef.current object with key 'status'
+                  // add element to inputRef.current object with key of 'status'
                   ref={(el) => { inputRef.current.status = el; }}
                   id="selectStatus"
                   defaultValue={null}
