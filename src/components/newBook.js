@@ -27,28 +27,28 @@ function NewBookForm() {
     });
   }
 
-  // const isDuplicate = useCallback((newTitle) => {
-  //   const duplicateTitleIndex = myLibrary.findIndex(
-  //     // find index of book with same title that is not the same book being edited
-  //     (book, i) => book.title.toLowerCase() === newTitle && i !== editBook.bookIndex,
-  //   );
-  //   return duplicateTitleIndex >= 0;
-  // }, [myLibrary, editBook.bookIndex]);
+  const isDuplicate = (newTitle) => {
+    const duplicateTitleIndex = myLibrary.findIndex(
+      // find index of book with same title that is not the same book being edited
+      (book, i) => book.title.toLowerCase() === newTitle && i !== editBook.bookIndex,
+    );
+    return duplicateTitleIndex >= 0;
+  };
 
-  // custom form validation of event to check if title already exists in myLibrary
-  // helper function used by input onChange event handler
+  // custom form validation to check if title already exists in myLibrary
+  // helper function for newBook.title useEffect
   const validate = () => {
     const element = inputRef.current.title;
     const newTitle = newBook.title.toLowerCase();
-    if (myLibrary.findIndex(
-      (book, i) => book.title.toLowerCase() === newTitle && i !== editBook.bookIndex,
-    ) >= 0) {
+    if (isDuplicate(newTitle)) {
       inputRef.current.title.setCustomValidity('Title already exists');
       return false;
     }
     element.setCustomValidity('');
     return true;
   };
+
+  useEffect(() => validate(), [newBook.title]);
 
   useEffect(() => {
     // reset form on successful submit of newBook to myLibrary and on first render
@@ -77,8 +77,6 @@ function NewBookForm() {
   const handleSubmit = (e) => {
     // used by form to either create new book or edit existing and preventing default form submit
     e.preventDefault();
-    const isValid = validate();
-    if (!isValid) return;
     if (editBook.bookIndex === -1) {
       // create new book
       setMyLibrary((prevState) => [newBook, ...prevState]);
@@ -91,11 +89,10 @@ function NewBookForm() {
   };
 
   const inputOnChange = useCallback((e) => {
-    // console.log(e.target);
-    // e.target.setCustomValidity('e.target');
-    // console.log(inputRef.current.title);
-    // inputRef.current.title.setCustomValidity('inputRef');
     setNewBook((prevState) => ({ ...prevState, [e.target.name]: e.target.value }));
+    // if (e.target.name === 'title') {
+    //   validate();
+    // }
   }, []);
 
   // handler used by <select> to convert "true" or "false" values to boolean since
@@ -119,6 +116,7 @@ function NewBookForm() {
                 name="title"
                 value={newBook.title}
                 onChange={inputOnChange}
+                // onBlur={validate}
                 required
               />
             </div>
