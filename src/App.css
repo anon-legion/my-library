@@ -1,3 +1,17 @@
+input:focus,
+select:focus {
+    box-shadow: 0 0 2px 1.5px gold!important;
+}
+
+/*
+    highlights invalid input if value is not empty
+    :not([value='']) prevents style from being applied
+    on required inputs that are empty
+*/
+input:invalid:not([value='']) {
+    box-shadow: 0 0 2px 1.5px #9A6AFF!important;
+}
+
 /* for mobile only */
 @media (max-width: 1024px) {
     /* display for desktop only, hide on mobile */
