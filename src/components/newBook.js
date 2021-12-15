@@ -148,7 +148,7 @@ function NewBookForm() {
             </div>
           </div>
         </div>
-        <div className="column">
+        <div className="column is-2">
           <div className="field">
             <label className="label" htmlFor="selectStatus">Status</label>
             <div className="control">

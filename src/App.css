@@ -1,3 +1,21 @@
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+main {
+    height: 100%;
+    /* fills remaining height of parent; requires parent display: flex */
+    flex: 1;
+}
+
+/* keeps newBook component at bottom */
+main > div.container {
+    width: 100%;
+    flex-grow: 0;
+}
+
 input:focus,
 select:focus {
     box-shadow: 0 0 2px 1.5px gold!important;
@@ -50,7 +68,6 @@ input:invalid:not([value='']) {
 }
 
 /* for desktop only */
-
 @media (min-width: 1025px){
     td:nth-child(-n+2),
     th:nth-child(-n+2) {
@@ -62,4 +79,15 @@ input,
 select,
 option {
     font-family: inherit;
+}
+
+/*
+  keeps footer at the bottom of page
+  requires div#root min-height 100vh
+*/
+div#root > footer {
+  position: sticky;
+  top: 100vh;
+  background-color: transparent;
+  z-index: 2;
 }

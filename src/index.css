@@ -1,6 +1,33 @@
 @import url('https://fonts.googleapis.com/css2?family=Kanit&display=swap');
 
+/* CSS reset */
 * {
   font-family: 'Kanit', sans-serif;
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
 }
 
+
+/*
+  if height value is not set on html and body,
+  it will assume the same value given to children
+  that is explicitly assigned a value (i.e. div#root)
+*/
+html {  
+  background-color: black;
+}
+
+div#root {
+  min-height: 100vh;
+  /* min-height: -webkit-fill-available; */
+  background-color: black;
+  display: flex;
+  flex-direction: column;
+}
+
+@media (min-width: 1024px) {
+  html {
+    overflow: hidden!important;
+  }
+}
