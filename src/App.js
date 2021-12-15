@@ -22,14 +22,12 @@ function App() {
               <Library />
             </div>
           </div>
-          {/* <div className="section"> */}
           <div className="container mt-4">
             <span className="is-size-5 is-size-6-mobile has-text-white-ter">Add/Edit Book (double click row to edit)</span>
             <div className="box has-background-info">
               <NewBookForm />
             </div>
           </div>
-          {/* </div> */}
         </LibraryProvider>
       </main>
       <Footer />
