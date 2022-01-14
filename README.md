@@ -14,6 +14,7 @@
 
 * **JavaScript**
   - [x] module pattern
+  - [x] custom form validation
 * **ReactJS**
   - [x] custom hook
   - [x] custom context component
